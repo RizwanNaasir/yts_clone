@@ -89,9 +89,9 @@ const detailPage = (props) => {
                             <div className="bg-white shadow sm:rounded-lg">
                                 <div className="px-4 py-5 sm:px-6 relative">
                                     <h2 id="applicant-information-title" className="text-lg leading-6 font-medium text-gray-900">
-                                        Applicant Information
+                                        Title Information
                                     </h2>
-                                    <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application.</p>
+                                    <p className="mt-1 max-w-2xl text-sm text-gray-500">Movie Details</p>
                                     <span className="inline-flex items-center absolute  top-3 right-3 px-5 py-2 rounded-md text-md font-medium bg-yellow-200 text-yellow-800">
                                         {movie.rating} / 10
                                       </span>
@@ -160,7 +160,7 @@ const detailPage = (props) => {
                                             className="mx-auto grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:gap-x-6 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12 xl:grid-cols-6"
                                         >
                                             {movie.cast.map((person) => (
-                                                <li key={person.imdb_code}>
+                                                 <li key={person.imdb_code}>
                                                     <div className="space-y-4">
                                                         <img className="mx-auto h-20 w-20 rounded-full lg:w-24 lg:h-24" src={person.url_small_image} alt="" />
                                                         <div className="space-y-2">
