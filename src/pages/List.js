@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from "react-router-dom";
 
 const List = (props) => {
     const {movies} = props;
@@ -31,7 +30,7 @@ const List = (props) => {
         </main>
             ;
     return (
-        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-6">
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-6">
             {movies.map((movies) => (
                 <li
                     key={movies.id}
