@@ -7,19 +7,13 @@ import withListLoading from '../components/withListLoading';
 import API from "../components/API";
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import { genres_list, sort_by_list, rating_list, quality_list } from '../components/filterLists'
-import {
-    ChatAltIcon,
-    CodeIcon,
-    DotsVerticalIcon,
-    EyeIcon,
-    FlagIcon,
-    PlusSmIcon,
-    SearchIcon,
-    ShareIcon,
-    StarIcon,
-    ThumbUpIcon,
-} from '@heroicons/react/solid'
-import { BellIcon, FireIcon, HomeIcon, MenuIcon, TrendingUpIcon, UserGroupIcon, XIcon } from '@heroicons/react/outline'
+import {SearchIcon,} from '@heroicons/react/solid'
+import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { styled } from '@mui/system';
+import TabsUnstyled from '@mui/base/TabsUnstyled';
+import TabsListUnstyled from '@mui/base/TabsListUnstyled';
+import { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
+import TabUnstyled, { tabUnstyledClasses } from '@mui/base/TabUnstyled';
 
 const user = {
     name: 'Chelsea Hagon',
@@ -42,35 +36,67 @@ const communities = [
     { name: 'Talents', href: '#' },
     { name: 'Gaming', href: '#' },
 ]
-const tabs = [
-    { name: 'Recent', href: '#', current: true, value: '' },
-    { name: 'Most Liked', href: '#', current: false, value: 'like_count' },
-    { name: 'Most Rated', href: '#', current: false, value: 'rating' },
-]
+const blue = {
+    50: '#F0F7FF',
+    100: '#C2E0FF',
+    200: '#80BFFF',
+    300: '#66B2FF',
+    400: '#3399FF',
+    500: '#007FFF',
+    600: '#0072E5',
+    700: '#0059B2',
+    800: '#004C99',
+    900: '#003A75',
+};
 
-const whoToFollow = [
-    {
-        name: 'Leonard Krasner',
-        handle: 'leonardkrasner',
-        href: '#',
-        imageUrl:
-            'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    // More people...
-]
-const trendingPosts = [
-    {
-        id: 1,
-        user: {
-            name: 'Floyd Miles',
-            imageUrl:
-                'https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-        body: 'What books do you have on your bookshelf just to look smarter than you actually are?',
-        comments: 291,
-    },
-    // More posts...
-]
+const Tab = styled(TabUnstyled)`
+  font-family: IBM Plex Sans, sans-serif;
+  color: white;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: bold;
+  background-color: transparent;
+  width: 100%;
+  padding: 12px 16px;
+  margin: 6px 6px;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+
+  &:hover {
+    background-color: ${blue[400]};
+  }
+
+  &:focus {
+    color: #fff;
+    border-radius: 3px;
+    outline: 2px solid ${blue[200]};
+    outline-offset: 2px;
+  }
+
+  &.${tabUnstyledClasses.selected} {
+    background-color: ${blue[50]};
+    color: ${blue[600]};
+  }
+
+  &.${buttonUnstyledClasses.disabled} {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const TabsList = styled(TabsListUnstyled)`
+  min-width: 320px;
+  background-color: ${blue[500]};
+  border-radius: 8px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: space-between;
+`;
+
 
 
 function classNames(...classes) {
@@ -84,7 +110,7 @@ function Home() {
         loading: false,
         movies: null,
     });
-    const [Limit, setLimit] = useState(20);
+    const [Limit, setLimit] = useState(9);
     const [Search, setSearch] = useState('');
     const [Sort, setSort] = useState('');
     const [Order, setOrder] = useState('');
@@ -125,304 +151,7 @@ function Home() {
         movieList()
     }, [page, Search, Limit, Sort, Order, Genre, Quality, Rating, setAppState, setPage]);
     return (
-        // <div className="min-h-full">
-        //     <div className="pb-10">
-        //         <main className="mx-auto max-w-7xl px-4 sm:mt-16">
-        //             <div className="text-center">
-        //                 <h1 className="text-6xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-        //                     <span className="block xl:inline">YTS</span>{' '}
-        //                     <span className="block text-indigo-600 xl:inline">on Steroids</span>
-        //                 </h1>
-        //                 <p className="my-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-        //                     Welcome to the un-official YTS website. Here you can browse and download YIFY movies in
-        //                     excellent 720p, 1080p, 2160p 4K and 3D quality on lightning speed..
-        //                 </p>
-        //             </div>
-        //         </main>
-        //         <main>
-        //             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        //
-        //                 <div className="flex sm:flex-row flex-col justify-center z-0 gap-3 group">
-        //                     <input
-        //                         type="text"
-        //                         value={Search}
-        //                         onChange={(e) => setSearch(e.target.value)}
-        //                         className=" bg-gray-200 appearance-none border-2 border-gray-200 rounded-full w-full sm:py-0 py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-indigo-500"
-        //                         placeholder="Search Movies"
-        //                     />
-        //                     <Listbox value={Genre} onChange={setGenre}>
-        //                         {({ open }) => (
-        //                             <>
-        //                                 <div className="relative">
-        //                                     <Listbox.Button className="relative w-max bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-        //                                         <span className="block">
-        //                                             {Genre === '' ? 'Genre' : Genre}
-        //                                         </span>
-        //                                         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-        //                                         <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-        //                                       </span>
-        //                                     </Listbox.Button>
-        //
-        //                                     <Transition
-        //                                         show={open}
-        //                                         as={Fragment}
-        //                                         leave="transition ease-in duration-100"
-        //                                         leaveFrom="opacity-100"
-        //                                         leaveTo="opacity-0"
-        //                                     >
-        //                                         <Listbox.Options className="absolute z-10 mt-1 w-max bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-        //                                             {genres_list.map((person) => (
-        //                                                 <Listbox.Option
-        //                                                     key={person.id}
-        //                                                     className={({ active }) =>
-        //                                                         classNames(
-        //                                                             active ? 'text-white bg-indigo-600' : 'text-gray-900',
-        //                                                             'cursor-default select-none relative py-2 pl-8 pr-4'
-        //                                                         )
-        //                                                     }
-        //                                                     value={person.value}
-        //                                                 >
-        //                                                     {({ selected, active }) => (
-        //                                                         <>
-        //                                                         <span className={classNames(selected ? 'font-semibold' : 'font-normal', 'block truncate')}>
-        //                                                           {person.name}
-        //                                                         </span>
-        //
-        //                                                             {selected ? (
-        //                                                                 <span
-        //                                                                     className={classNames(
-        //                                                                         active ? 'text-white' : 'text-indigo-600',
-        //                                                                         'absolute inset-y-0 left-0 flex items-center pl-1.5'
-        //                                                                     )}
-        //                                                                 >
-        //                                                                 <CheckIcon className="h-5 w-5" aria-hidden="true" />
-        //                                                               </span>
-        //                                                             ) : null}
-        //                                                         </>
-        //                                                     )}
-        //                                                 </Listbox.Option>
-        //                                             ))}
-        //                                         </Listbox.Options>
-        //                                     </Transition>
-        //                                 </div>
-        //                             </>
-        //                         )}
-        //                     </Listbox>
-        //                     <Listbox value={Quality} onChange={setQuality}>
-        //                         {({ open }) => (
-        //                             <>
-        //                                 <div className="relative">
-        //                                     <Listbox.Button className="relative w-max bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-        //                                         <span className="block">
-        //                                             {Quality === '' ? 'Quality' : Quality}
-        //                                         </span>
-        //                                         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-        //                                         <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-        //                                       </span>
-        //                                     </Listbox.Button>
-        //
-        //                                     <Transition
-        //                                         show={open}
-        //                                         as={Fragment}
-        //                                         leave="transition ease-in duration-100"
-        //                                         leaveFrom="opacity-100"
-        //                                         leaveTo="opacity-0"
-        //                                     >
-        //                                         <Listbox.Options className="absolute z-10 mt-1 w-max bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-        //                                             {quality_list.map((person) => (
-        //                                                 <Listbox.Option
-        //                                                     key={person.id}
-        //                                                     className={({ active }) =>
-        //                                                         classNames(
-        //                                                             active ? 'text-white bg-indigo-600' : 'text-gray-900',
-        //                                                             'cursor-default select-none relative py-2 pl-8 pr-4'
-        //                                                         )
-        //                                                     }
-        //                                                     value={person.value}
-        //                                                 >
-        //                                                     {({ selected, active }) => (
-        //                                                         <>
-        //                                                         <span className={classNames(selected ? 'font-semibold' : 'font-normal', 'block truncate')}>
-        //                                                             {person.name}
-        //                                                         </span>
-        //                                                         {selected ? (
-        //                                                             <span
-        //                                                                 className={classNames(
-        //
-        //                                                                 active ? 'text-white' : 'text-indigo-600',
-        //                                                                 'absolute inset-y-0 left-0 flex items-center pl-1.5'
-        //                                                             )}
-        //                                                             >
-        //                                                                 <CheckIcon className="h-5 w-5" aria-hidden="true" />
-        //                                                             </span>
-        //                                                         ) : null}
-        //                                                         </>
-        //                                                     )}
-        //                                                 </Listbox.Option>
-        //                                             ))}
-        //                                         </Listbox.Options>
-        //                                     </Transition>
-        //                                 </div>
-        //                             </>
-        //                         )}
-        //                     </Listbox>
-        //                     <Listbox value={Sort} onChange={setSort}>
-        //                         {({ open }) => (
-        //                             <>
-        //                                 <div className="relative">
-        //                                     <Listbox.Button className="relative w-max bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-        //                                         <span className="block">
-        //                                             {Sort === '' ? 'Sort' : Sort}
-        //                                         </span>
-        //                                         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-        //                                         <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-        //                                       </span>
-        //                                     </Listbox.Button>
-        //
-        //                                     <Transition
-        //                                         show={open}
-        //                                         as={Fragment}
-        //                                         leave="transition ease-in duration-100"
-        //                                         leaveFrom="opacity-100"
-        //                                         leaveTo="opacity-0"
-        //                                     >
-        //                                         <Listbox.Options className="absolute z-10 mt-1 w-max bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-        //                                             {sort_by_list.map((person) => (
-        //                                                 <Listbox.Option
-        //                                                     key={person.id}
-        //                                                     className={({ active }) =>
-        //                                                         classNames(
-        //                                                             active ? 'text-white bg-indigo-600' : 'text-gray-900',
-        //                                                             'cursor-default select-none relative py-2 pl-8 pr-4'
-        //                                                         )
-        //                                                     }
-        //                                                     value={person.value}
-        //                                                 >
-        //                                                     {({ selected, active }) => (
-        //                                                         <>
-        //                                                         <span className={classNames(selected ? 'font-semibold' : 'font-normal', 'block truncate')}>
-        //                                                             {person.name}
-        //                                                         </span>
-        //                                                         {selected ? (
-        //                                                             <span
-        //                                                                 className={classNames(
-        //                                                                     <span className={classNames(
-        //                                                                         active ? 'text-white' : 'text-indigo-600',
-        //                                                                         'absolute inset-y-0 left-0 flex items-center pl-1.5'
-        //                                                                     )}
-        //                                                                     >
-        //                                                                         <CheckIcon className="h-5 w-5" aria-hidden="true" />
-        //                                                                     </span>
-        //                                                                 )}
-        //                                                             >
-        //                                                             </span>
-        //                                                         ) : null}
-        //                                                         </>
-        //                                                     )}
-        //                                                 </Listbox.Option>
-        //                                             ))}
-        //                                         </Listbox.Options>
-        //                                     </Transition>
-        //                                 </div>
-        //                             </>
-        //                         )}
-        //                     </Listbox>
-        //                     <Listbox value={Rating} onChange={setRating}>
-        //                         {({ open }) => (
-        //                             <>
-        //                                 <div className="relative">
-        //                                     <Listbox.Button className="relative w-max bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-        //                                         <span className="block">
-        //                                             {Rating === '' ? 'Rating' : Rating}
-        //                                         </span>
-        //                                         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-        //                                         <SelectorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-        //                                       </span>
-        //                                     </Listbox.Button>
-        //
-        //                                     <Transition
-        //                                         show={open}
-        //                                         as={Fragment}
-        //                                         leave="transition ease-in duration-100"
-        //                                         leaveFrom="opacity-100"
-        //                                         leaveTo="opacity-0"
-        //                                     >
-        //                                         <Listbox.Options className="absolute z-10 mt-1 w-max bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-        //                                             {rating_list.map((person) => (
-        //                                                 <Listbox.Option
-        //                                                     key={person.id}
-        //                                                     className={({ active }) =>
-        //                                                         classNames(
-        //                                                             active ? 'text-white bg-indigo-600' : 'text-gray-900',
-        //                                                             'cursor-default select-none relative py-2 pl-8 pr-4'
-        //                                                         )
-        //                                                     }
-        //                                                     value={person.value}
-        //                                                 >
-        //                                                     {({ selected, active }) => (
-        //                                                         <>
-        //                                                         <span className={classNames(selected ? 'font-semibold' : 'font-normal', 'block truncate')}>
-        //                                                             {person.name}
-        //                                                         </span>
-        //                                                             {selected ? (
-        //                                                                 <span
-        //                                                                     className={classNames(
-        //                                                                         <span className={classNames(
-        //                                                                             active ? 'text-white' : 'text-indigo-600',
-        //                                                                             'absolute inset-y-0 left-0 flex items-center pl-1.5'
-        //                                                                         )}
-        //                                                                         >
-        //                                                                         <CheckIcon className="h-5 w-5" aria-hidden="true" />
-        //                                                                     </span>
-        //                                                                     )}
-        //                                                                 >
-        //                                                             </span>
-        //                                                             ) : null}
-        //                                                         </>
-        //                                                     )}
-        //                                                 </Listbox.Option>
-        //                                             ))}
-        //                                         </Listbox.Options>
-        //                                     </Transition>
-        //                                 </div>
-        //                             </>
-        //                         )}
-        //                     </Listbox>
-        //                 </div>
-        //                 {/* Replace with your content */}
-        //                 <div className="px-4 py-8 sm:px-0">
-        //                     <div className='repo-container'>
-        //                         <ListLoading isLoading={appState.loading} movies={appState.movies}/>
-        //                     </div>
-        //                 </div>
-        //                 {/* /End replace */}
-        //             </div>
-        //         </main>
-        //     </div>
-        //     <nav
-        //         className="bg-white px-4 fixed bottom-0 w-full py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
-        //         aria-label="Pagination"
-        //     >
-        //         <div className="hidden sm:block">
-        //             <p className="text-sm text-gray-700">
-        //                 Showing Page <span className="font-medium">{page}</span> of <span
-        //                 className="font-medium">{Math.trunc(totalMovies / Limit)}</span>
-        //             </p>
-        //         </div>
-        //         <div className="flex-1 flex justify-between sm:justify-end">
-        //             <button
-        //                 onClick={() => setPage(page--)}
-        //                 className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-        //                 Previous
-        //             </button>
-        //             <button
-        //                 onClick={() => setPage(page++)}
-        //                 className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-        //                 Next
-        //             </button>
-        //         </div>
-        //     </nav>
-        // </div>
+
         <div className="min-h-full">
             {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
             <Popover
@@ -1098,51 +827,19 @@ function Home() {
                         </nav>
                     </div>
                     <main className="lg:col-span-9 xl:col-span-9">
-                        <div className="px-4 sm:px-0">
-                            <div className="sm:hidden">
-                                <label htmlFor="question-tabs" className="sr-only">
-                                    Select a tab
-                                </label>
-                                <select
-                                    id="question-tabs"
-                                    className="block w-full rounded-md border-gray-300 text-base font-medium text-gray-900 shadow-sm focus:border-rose-500 focus:ring-rose-500"
-                                    defaultValue={tabs.find((tab) => tab.current).name}
-                                >
-                                    {tabs.map((tab) => (
-                                        <option
-                                            onClick={() => setCurrentTab(true)}
-                                            onChange={() => setSort(tab.name)}
-                                            key={tab.name}>{tab.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="hidden sm:block">
-                                <nav className="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
-                                    {tabs.map((tab, tabIdx) => (
-                                        <a
-                                            key={tab.name}
-                                            href={tab.href}
-                                            aria-current={tab.current ? 'page' : undefined}
-                                            className={classNames(
-                                                tab.current ? 'text-gray-900' : 'text-gray-500 hover:text-gray-700',
-                                                tabIdx === 0 ? 'rounded-l-lg' : '',
-                                                tabIdx === tabs.length - 1 ? 'rounded-r-lg' : '',
-                                                'group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-6 text-sm font-medium text-center hover:bg-gray-50 focus:z-10'
-                                            )}
-                                        >
-                                            <span>{tab.name}</span>
-                                            <span
-                                                aria-hidden="true"
-                                                className={classNames(
-                                                    tab.current ? 'bg-rose-500' : 'bg-transparent',
-                                                    'absolute inset-x-0 bottom-0 h-0.5'
-                                                )}
-                                            />
-                                        </a>
-                                    ))}
-                                </nav>
-                            </div>
-                        </div>
+                        <TabsUnstyled defaultValue={0}>
+                            <TabsList>
+                                <Tab
+                                    onClick={() => setSort('')}
+                                >Recent</Tab>
+                                <Tab
+                                    onClick={() => setSort('download_count')}
+                                >Most Liked</Tab>
+                                <Tab
+                                    onClick={() => setSort('rating')}
+                                >Most Rated</Tab>
+                            </TabsList>
+                        </TabsUnstyled>
                         <div className="mt-4">
                             <h1 className="sr-only">Recent questions</h1>
                             <ListLoading isLoading={appState.loading} movies={appState.movies}/>
