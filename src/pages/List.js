@@ -43,7 +43,7 @@ const List = (props) => {
                         <h3 className="mt-6 text-gray-900 text-lg font-medium">{movies.title}</h3>
                         <dl className="mt-1 flex-grow flex flex-col justify-between">
                             <div className="flex-1 flex-row truncate">
-                                {movies.genres.map((genre) => (
+                                {movies.genres?.map((genre) => (
                                     <span className="text-gray-500 text-sm px-1">{genre}</span>
                                 ))}
                             </div>
@@ -61,7 +61,7 @@ const List = (props) => {
                     </div>
                     <div>
                         <div className="-mt-px flex divide-x divide-gray-200">
-                            {movies.torrents.map((movies) => (
+                            {movies.torrents?.map((movies) => (
                                 <div className="w-0 flex-1 flex">
                                     <a
                                         href={`magnet:?xt=urn:btih:${movies.hash}&dn=${movies.title}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`}

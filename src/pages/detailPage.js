@@ -15,7 +15,7 @@ const detailPage = (props) => {
                         <div>
                             <h1 className="text-4xl font-bold text-gray-900">{movie.title}</h1>
                             <p className="text-gray-500 my-2 font-bold text-black">{movie.year}</p>
-                            {movie.genres.map((genre) => (
+                            {movie.genres?.map((genre) => (
                                 <span className="inline-flex items-center px-2.5 mr-2 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800">
                                 {genre}
                                 </span>
@@ -23,7 +23,7 @@ const detailPage = (props) => {
                         </div>
                     </div>
                     <div className="mt-6 flex flex-col-row justify-stretch space-x-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
-                        {movie.torrents.map((item) => (
+                        {movie.torrents?.map((item) => (
                             <a
                                 href={`magnet:?xt=urn:btih:${movie.hash}&dn=${movie.title}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`}
                             >
@@ -65,22 +65,7 @@ const detailPage = (props) => {
                                 </div>
                                 <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                                        <div className="sm:col-span-1">
-                                            <dt className="text-sm font-medium text-gray-500">Application for</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">Backend Developer</dd>
-                                        </div>
-                                        <div className="sm:col-span-1">
-                                            <dt className="text-sm font-medium text-gray-500">Email address</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">ricardocooper@example.com</dd>
-                                        </div>
-                                        <div className="sm:col-span-1">
-                                            <dt className="text-sm font-medium text-gray-500">Salary expectation</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">$120,000</dd>
-                                        </div>
-                                        <div className="sm:col-span-1">
-                                            <dt className="text-sm font-medium text-gray-500">Phone</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">+1 555-555-5555</dd>
-                                        </div>
+
                                         <div className="sm:col-span-2">
                                             <dt className="text-sm font-medium text-gray-500">Summary</dt>
                                             <dd className="mt-1 text-sm text-gray-900">
@@ -97,18 +82,6 @@ const detailPage = (props) => {
                                             ></iframe>
                                         </div>
                                     </dl>
-                                    <div
-                                        className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-                                        <ul className="flex flex-wrap -mb-px">
-                                            {movie.torrents.map((item) => (
-                                            <li className="mr-2">
-                                                <a href="#"
-                                                   className="inline-block p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
-                                                    {item.quality}</a>
-                                            </li>
-                                            ))}
-                                        </ul>
-                                    </div>
                                 </div>
                             </div>
                         </section>
@@ -126,7 +99,7 @@ const detailPage = (props) => {
                                             role="list"
                                             className="mx-auto grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:gap-x-6 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12 xl:grid-cols-6"
                                         >
-                                            {movie.cast.map((person) => (
+                                            {movie.cast?.map((person) => (
                                                  <li key={person.imdb_code}>
                                                     <div className="space-y-4">
                                                         <img className="mx-auto h-20 w-20 rounded-full lg:w-24 lg:h-24" src={person.url_small_image} alt="" />
