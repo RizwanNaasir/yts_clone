@@ -9,10 +9,7 @@ function App() {
         <Router>
             <Switch>
                 <Route exact path='/' component={Home}/>
-                <Route path='/details/:id' component={Details}>
-                    <Fragment></Fragment>
-                    <button>Button</button>
-                </Route>
+                <Route path='/details/:id' component={Details}/>
             </Switch>
         </Router>
     )
