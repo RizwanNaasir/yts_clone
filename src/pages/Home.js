@@ -5,7 +5,6 @@ import '../App.css';
 import List from './List';
 import withListLoading from '../components/withListLoading';
 import API from "../components/API";
-import {CheckIcon, SelectorIcon} from '@heroicons/react/solid'
 import {genres_list, sort_by_list, rating_list, quality_list} from '../components/filterLists'
 import {SearchIcon,} from '@heroicons/react/solid'
 import {BellIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
@@ -15,17 +14,14 @@ import TabsListUnstyled from '@mui/base/TabsListUnstyled';
 import {buttonUnstyledClasses} from '@mui/base/ButtonUnstyled';
 import TabUnstyled, {tabUnstyledClasses} from '@mui/base/TabUnstyled';
 import SelectSmall from "../components/MenuLists";
+import {useAuthState} from "react-firebase-hooks/auth";
+import {useNavigate, Link} from "react-router-dom";
+import {auth, db, logout} from "../firebase";
+import {query, collection, getDocs, where} from "firebase/firestore";
 
-const user = {
-    name: 'Chelsea Hagon',
-    email: 'chelsea.hagon@example.com',
-    imageUrl:
-        'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
+
 const userNavigation = [
     {name: 'Your Profile', href: '#'},
-    {name: 'Settings', href: '#'},
-    {name: 'Sign out', href: '#'},
 ]
 const communities = [
     {name: 'Movies', href: '#'},
@@ -105,6 +101,14 @@ function classNames(...classes) {
 
 
 function Home() {
+
+    const [user, loading, error] = useAuthState(auth);
+    const [name, setName] = useState("");
+    const navigate = useNavigate();
+    const fetchUserName = async () => {
+        const q = query(collection(db, "users"), where("uid", "==", user?.uid));
+        const doc = await getDocs(q);
+    };
     const ListLoading = withListLoading(List);
     const [appState, setAppState] = useState({
         loading: false,
@@ -147,6 +151,10 @@ function Home() {
             );
     }
 
+    useEffect(() => {
+        fetchUserName().then(r => {
+        });
+    }, [user, loading]);
     useEffect(() => {
         movieList()
     }, [page, Search, Limit, Sort, Order, Genre, Quality, Rating, setAppState, setPage]);
@@ -216,101 +224,110 @@ function Home() {
                                     </Popover.Button>
                                 </div>
                                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                                    <a href="#" className="text-sm font-medium text-gray-900 hover:underline">
-                                        Go Premium
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="ml-5 flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
-                                    >
-                                        <span className="sr-only">View notifications</span>
-                                        <BellIcon className="h-6 w-6" aria-hidden="true"/>
-                                    </a>
-
-                                    {/* Profile dropdown */}
-                                    <Menu as="div" className="flex-shrink-0 relative ml-5">
-                                        <div>
-                                            <Menu.Button
-                                                className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
-                                                <span className="sr-only">Open user menu</span>
-                                                <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt=""/>
-                                            </Menu.Button>
-                                        </div>
-                                        <Transition
-                                            as={Fragment}
-                                            enter="transition ease-out duration-100"
-                                            enterFrom="transform opacity-0 scale-95"
-                                            enterTo="transform opacity-100 scale-100"
-                                            leave="transition ease-in duration-75"
-                                            leaveFrom="transform opacity-100 scale-100"
-                                            leaveTo="transform opacity-0 scale-95"
-                                        >
-                                            <Menu.Items
-                                                className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
-                                                {userNavigation.map((item) => (
-                                                    <Menu.Item key={item.name}>
-                                                        {({active}) => (
-                                                            <a
-                                                                href={item.href}
-                                                                className={classNames(
-                                                                    active ? 'bg-gray-100' : '',
-                                                                    'block py-2 px-4 text-sm text-gray-700'
+                                    {user ?
+                                        <>
+                                            <a
+                                                href="#"
+                                                className="ml-5 flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+                                            >
+                                                <span className="sr-only">View notifications</span>
+                                                <BellIcon className="h-6 w-6" aria-hidden="true"/>
+                                            </a>
+                                            <Menu as="div" className="flex-shrink-0 relative ml-5">
+                                                <div>
+                                                    <Menu.Button
+                                                        className="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
+                                                        <span className="sr-only">Open user menu</span>
+                                                        <img className="h-8 w-8 rounded-full" src={user?.photoURL}
+                                                             alt=""/>
+                                                    </Menu.Button>
+                                                </div>
+                                                <Transition
+                                                    as={Fragment}
+                                                    enter="transition ease-out duration-100"
+                                                    enterFrom="transform opacity-0 scale-95"
+                                                    enterTo="transform opacity-100 scale-100"
+                                                    leave="transition ease-in duration-75"
+                                                    leaveFrom="transform opacity-100 scale-100"
+                                                    leaveTo="transform opacity-0 scale-95"
+                                                >
+                                                    <Menu.Items
+                                                        className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
+                                                        {userNavigation?.map((item) => (
+                                                            <Menu.Item key={item.name}>
+                                                                {({active}) => (
+                                                                    <a
+                                                                        href={item.href}
+                                                                        className={classNames(
+                                                                            active ? 'bg-gray-100' : '',
+                                                                            'block py-2 px-4 text-sm text-gray-700'
+                                                                        )}
+                                                                    >
+                                                                        {item.name}
+                                                                    </a>
                                                                 )}
-                                                            >
-                                                                {item.name}
-                                                            </a>
-                                                        )}
-                                                    </Menu.Item>
-                                                ))}
-                                            </Menu.Items>
-                                        </Transition>
-                                    </Menu>
-
-                                    <a
-                                        href="#"
-                                        className="ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
-                                    >
-                                        New Post
-                                    </a>
+                                                            </Menu.Item>
+                                                        ))}
+                                                    </Menu.Items>
+                                                </Transition>
+                                            </Menu>
+                                            <button
+                                                onClick={() => {
+                                                    logout()
+                                                }}
+                                                className="ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+                                            >
+                                                Logout
+                                            </button>
+                                        </> :
+                                        <><Link to="/register" className="text-sm font-medium text-gray-900 hover:underline">
+                                            Register
+                                        </Link>
+                                        <Link
+                                            to="/login"
+                                            className="ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+                                        >
+                                            Login
+                                        </Link> </>}
                                 </div>
                             </div>
                         </div>
 
                         <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
                             <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
-                                    <SelectSmall
-                                        onChange={setGenre}
-                                        value={Genre}
-                                        label="Genre"
-                                        list={genres_list}
-                                    />
-                                    <SelectSmall
-                                        onChange={setQuality}
-                                        value={Quality}
-                                        label="Quality"
-                                        list={quality_list}
-                                    />
-                                    <SelectSmall
-                                        onChange={setSort}
-                                        value={Sort}
-                                        label="Sort by"
-                                        list={sort_by_list}
-                                    />
-                                    <SelectSmall
-                                        onChange={setRating}
-                                        value={Rating}
-                                        label="Min Rating"
-                                        list={rating_list}
-                                    />
+                                <SelectSmall
+                                    onChange={setGenre}
+                                    value={Genre}
+                                    label="Genre"
+                                    list={genres_list}
+                                />
+                                <SelectSmall
+                                    onChange={setQuality}
+                                    value={Quality}
+                                    label="Quality"
+                                    list={quality_list}
+                                />
+                                <SelectSmall
+                                    onChange={setSort}
+                                    value={Sort}
+                                    label="Sort by"
+                                    list={sort_by_list}
+                                />
+                                <SelectSmall
+                                    onChange={setRating}
+                                    value={Rating}
+                                    label="Min Rating"
+                                    list={rating_list}
+                                />
                             </div>
                             <div className="border-t border-gray-200 pt-4">
                                 <div className="max-w-3xl mx-auto px-4 flex items-center sm:px-6">
                                     <div className="flex-shrink-0">
-                                        <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt=""/>
+                                        <img className="h-10 w-10 rounded-full" src={user?.photoURL} alt=""/>
                                     </div>
                                     <div className="ml-3">
-                                        <div className="text-base font-medium text-gray-800">{user.name}</div>
-                                        <div className="text-sm font-medium text-gray-500">{user.email}</div>
+                                        <div className="text-base font-medium text-gray-800">{user?.displayName}</div>
+                                        <div className="text-sm font-medium text-gray-500">{user?.email}</div>
                                     </div>
                                     <button
                                         type="button"
