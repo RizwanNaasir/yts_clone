@@ -1,8 +1,4 @@
 import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 export default function SelectSmall(props) {
 
@@ -11,19 +7,22 @@ export default function SelectSmall(props) {
     };
 
     return (
-        <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
-            <InputLabel id="demo-select-small">{props.label}</InputLabel>
-            <Select
-                labelId="demo-select-small"
+        <div>
+            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                {props.label}
+            </label>
+            <select
                 id="demo-select-small"
                 value= {props.value}
-                label= {props.label}
                 onChange={handleChange}
+                name={props.label}
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                defaultValue={props.value}
             >
                 {props.list.map((movies) => (
-                    <MenuItem key={movies.value} value={movies.value}>{movies.name}</MenuItem>
-                ))}
-            </Select>
-        </FormControl>
+                                <option key={movies.value} value={movies.value}>{movies.name}</option>
+                            ))}
+            </select>
+        </div>
     );
 }

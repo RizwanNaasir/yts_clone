@@ -42,6 +42,10 @@ const sort_by_list = [
     {name: 'Most Liked', value: 'like_count'},
     {name: 'Date Added', value: 'date_added'},
 ]
+const order = [
+    {name: 'Ascending', value: 'asc', description : 'Sort in ascending order'},
+    {name: 'Descending', value: 'desc' , description : 'Sort in descending order'},
+]
 const rating_list = [
     {name: 'All', value: '' },
     {name: '9', value: '9' },
@@ -132,4 +136,4 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
-export { genres_list, sort_by_list, rating_list, quality_list, TabsList, Tab, communities, blue };
+export { genres_list, sort_by_list, rating_list, quality_list, TabsList, Tab, communities, blue,order };

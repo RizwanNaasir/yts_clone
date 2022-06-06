@@ -4,7 +4,7 @@ import '../App.css';
 import List from './List';
 import withListLoading from '../components/WithListLoading';
 import API from "../components/API";
-import {genres_list, sort_by_list, rating_list, quality_list, communities, TabsList, Tab, } from '../components/filterLists'
+import {genres_list, sort_by_list, rating_list, quality_list, communities, TabsList, Tab, order } from '../components/filterLists'
 import {SearchIcon,} from '@heroicons/react/solid'
 import {BellIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
 import TabsUnstyled from '@mui/base/TabsUnstyled';
@@ -12,6 +12,7 @@ import SelectSmall from "../components/MenuLists";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {Link} from "react-router-dom";
 import {auth, logout} from "../firebase";
+import CustomSelect from "../components/CustomSelect";
 
 const userNavigation = [
     {name: 'Your Profile', href: '#'},
@@ -91,8 +92,8 @@ function Home() {
                                         <a href="#">
                                             <img
                                                 className="block h-8 w-auto"
-                                                src="https://tailwindui.com/img/logos/workflow-mark.svg?color=rose&shade=500"
-                                                alt="Workflow"
+                                                src={window.location.origin + '/logo512.png'}
+                                                alt="YTS Logo"
                                             />
                                         </a>
                                     </div>
@@ -294,7 +295,12 @@ function Home() {
                 <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
                     <div className="hidden lg:block lg:col-span-3 xl:col-span-2">
                         <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
-                            <div className="pb-8 space-y-3">
+                            <p
+                                className="p-3 text-xs text-center font-semibold text-gray-500 uppercase tracking-wider"
+                            >
+                                Filters
+                            </p>
+                            <div className="py-8 space-y-3">
                                 <SelectSmall
                                     onChange={setGenre}
                                     value={Genre}
@@ -358,6 +364,13 @@ function Home() {
                             </TabsList>
                         </TabsUnstyled>
                         <div className="mt-4">
+                            {/*<div className="flex justify-end">*/}
+                            {/*<CustomSelect*/}
+                            {/*    onChange={setOrder}*/}
+                            {/*    value={Order}*/}
+                            {/*    label="Order"*/}
+                            {/*    list={order}*/}
+                            {/*/></div>*/}
                             <h1 className="sr-only">Recent Movies</h1>
                             <ListLoading isLoading={appState.loading} movies={appState.movies}/>
                         </div>
