@@ -7,6 +7,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/Dashboard,js";
 import Reset from "./pages/auth/Reset";
+import Task from "./pages/AddTask";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                 {/*End Auth Routes*/}
                 <Route exact path="/dashboard" element={<Dashboard/>}/>
                 <Route path='/details' element={<Details/>}/>
+                <Route path='/task' element={<Task/>}/>
             </Routes>
         </Router>
     )
