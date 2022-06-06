@@ -1,11 +1,12 @@
 import React from 'react';
 import {QuestionMarkCircleIcon} from '@heroicons/react/solid'
+import LinearProgress from "@mui/material/LinearProgress";
 
 const detailPage = (props) => {
-    const {movie} = props;
+
+    const {movie,suggestions} = props;
     if (!movie || movie.length === 0)
-        return <withListLoading/>
-            ;
+        return <LinearProgress />;
     return (
         <div className="min-h-full">
             <main className="py-10">

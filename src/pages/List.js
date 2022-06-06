@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const List = (props) => {
     const {movies} = props;
@@ -36,7 +37,7 @@ const List = (props) => {
                     key={movies.id}
                     className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
                 >
-                   <a href={'/details/'+movies.id}>
+                   <Link to="/details" state={{data : movies}}>
                     <div className="flex-1 flex flex-col p-3">
                         <img className="w-full mx-auto rounded-lg shadow-2xl
                             " src={movies.large_cover_image} alt=""/>
@@ -73,7 +74,7 @@ const List = (props) => {
                             ))}
                         </div>
                     </div>
-                   </a>
+                   </Link>
                 </li>
             ))}
         </ul>

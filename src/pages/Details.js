@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import List from './List';
-import withListLoading from '../components/withListLoading';
-import Page from "./detailPage";
+import WithListLoading from '../components/WithListLoading';
+import Page from "./DetailPage";
 import API from '../components/API';
+import { useLocation } from "react-router-dom";
 
 const Details = (props) => {
-    const ListLoading = withListLoading(List);
+    const location = useLocation();
+    const data = location.state?.data;
+    const ListLoading = WithListLoading(Page);
     const [appState, setAppState] = useState({
         loading: false,
         movie: null,
@@ -14,7 +16,7 @@ const Details = (props) => {
         setAppState({loading: true});
         const apiUrl = `movie_details.json`;
         const params = {
-            movie_id: props.match.params.id,
+            movie_id: data.id,
             with_cast: true,
             with_images: true,
         }
@@ -31,9 +33,9 @@ const Details = (props) => {
 
     useEffect(() => {
         movieList()
-    }, [ setAppState]);
+    }, [ setAppState ]);
     return (
-        <Page isLoading={appState.loading} movie={appState.movie}/>
+        <ListLoading isLoading={appState.loading} movie={appState.movie}/>
     );
 };
 export  default Details;

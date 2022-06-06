@@ -1,99 +1,21 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import {Menu, Popover, Transition, Listbox} from '@headlessui/react'
-
 import '../App.css';
 import List from './List';
-import withListLoading from '../components/withListLoading';
+import withListLoading from '../components/WithListLoading';
 import API from "../components/API";
-import {genres_list, sort_by_list, rating_list, quality_list} from '../components/filterLists'
+import {genres_list, sort_by_list, rating_list, quality_list, communities, TabsList, Tab, } from '../components/filterLists'
 import {SearchIcon,} from '@heroicons/react/solid'
 import {BellIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
-import {styled} from '@mui/system';
 import TabsUnstyled from '@mui/base/TabsUnstyled';
-import TabsListUnstyled from '@mui/base/TabsListUnstyled';
-import {buttonUnstyledClasses} from '@mui/base/ButtonUnstyled';
-import TabUnstyled, {tabUnstyledClasses} from '@mui/base/TabUnstyled';
 import SelectSmall from "../components/MenuLists";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {useNavigate, Link} from "react-router-dom";
-import {auth, db, logout} from "../firebase";
-import {query, collection, getDocs, where} from "firebase/firestore";
-
+import {Link} from "react-router-dom";
+import {auth, logout} from "../firebase";
 
 const userNavigation = [
     {name: 'Your Profile', href: '#'},
 ]
-const communities = [
-    {name: 'Movies', href: '#'},
-    {name: 'Food', href: '#'},
-    {name: 'Sports', href: '#'},
-    {name: 'Animals', href: '#'},
-    {name: 'Science', href: '#'},
-    {name: 'Dinosaurs', href: '#'},
-    {name: 'Talents', href: '#'},
-    {name: 'Gaming', href: '#'},
-]
-const blue = {
-    50: '#F0F7FF',
-    100: '#C2E0FF',
-    200: '#80BFFF',
-    300: '#66B2FF',
-    400: '#3399FF',
-    500: '#007FFF',
-    600: '#0072E5',
-    700: '#0059B2',
-    800: '#004C99',
-    900: '#003A75',
-};
-
-const Tab = styled(TabUnstyled)`
-  font-family: IBM Plex Sans, sans-serif;
-  color: white;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: bold;
-  background-color: transparent;
-  width: 100%;
-  padding: 12px 16px;
-  margin: 6px 6px;
-  border: none;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-
-  &:hover {
-    background-color: ${blue[400]};
-  }
-
-  &:focus {
-    color: #fff;
-    border-radius: 3px;
-    outline: 2px solid ${blue[200]};
-    outline-offset: 2px;
-  }
-
-  &.${tabUnstyledClasses.selected} {
-    background-color: ${blue[50]};
-    color: ${blue[600]};
-  }
-
-  &.${buttonUnstyledClasses.disabled} {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const TabsList = styled(TabsListUnstyled)`
-  min-width: 320px;
-  background-color: ${blue[500]};
-  border-radius: 8px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: space-between;
-`;
-
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -103,12 +25,6 @@ function classNames(...classes) {
 function Home() {
 
     const [user, loading, error] = useAuthState(auth);
-    const [name, setName] = useState("");
-    const navigate = useNavigate();
-    const fetchUserName = async () => {
-        const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-        const doc = await getDocs(q);
-    };
     const ListLoading = withListLoading(List);
     const [appState, setAppState] = useState({
         loading: false,
@@ -150,11 +66,6 @@ function Home() {
                 }
             );
     }
-
-    useEffect(() => {
-        fetchUserName().then(r => {
-        });
-    }, [user, loading]);
     useEffect(() => {
         movieList()
     }, [page, Search, Limit, Sort, Order, Genre, Quality, Rating, setAppState, setPage]);
@@ -272,9 +183,7 @@ function Home() {
                                                 </Transition>
                                             </Menu>
                                             <button
-                                                onClick={() => {
-                                                    logout()
-                                                }}
+                                                onClick={() => {logout()}}
                                                 className="ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
                                             >
                                                 Logout
@@ -320,49 +229,61 @@ function Home() {
                                     list={rating_list}
                                 />
                             </div>
-                            <div className="border-t border-gray-200 pt-4">
-                                <div className="max-w-3xl mx-auto px-4 flex items-center sm:px-6">
-                                    <div className="flex-shrink-0">
-                                        <img className="h-10 w-10 rounded-full" src={user?.photoURL} alt=""/>
-                                    </div>
-                                    <div className="ml-3">
-                                        <div className="text-base font-medium text-gray-800">{user?.displayName}</div>
-                                        <div className="text-sm font-medium text-gray-500">{user?.email}</div>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className="ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
-                                    >
-                                        <span className="sr-only">View notifications</span>
-                                        <BellIcon className="h-6 w-6" aria-hidden="true"/>
-                                    </button>
-                                </div>
-                                <div className="mt-3 max-w-3xl mx-auto px-2 space-y-1 sm:px-4">
-                                    {userNavigation.map((item) => (
-                                        <a
-                                            key={item.name}
-                                            href={item.href}
-                                            className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                                        >
-                                            {item.name}
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
 
                             <div className="mt-6 max-w-3xl mx-auto px-4 sm:px-6">
-                                <a
-                                    href="#"
-                                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700"
-                                >
-                                    New Post
-                                </a>
+                                {user ?
+                                    <>
+                                        <div className="border-t border-gray-200 pt-4">
+                                            <div className="max-w-3xl mx-auto px-4 flex items-center sm:px-6">
+                                                <div className="flex-shrink-0">
+                                                    <img className="h-10 w-10 rounded-full" src={user?.photoURL} alt=""/>
+                                                </div>
+                                                <div className="ml-3">
+                                                    <div className="text-base font-medium text-gray-800">{user?.displayName}</div>
+                                                    <div className="text-sm font-medium text-gray-500">{user?.email}</div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    className="ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+                                                >
+                                                    <span className="sr-only">View notifications</span>
+                                                    <BellIcon className="h-6 w-6" aria-hidden="true"/>
+                                                </button>
+                                            </div>
+                                            <div className="mt-3 max-w-3xl mx-auto px-2 space-y-1 sm:px-4">
+                                                {userNavigation.map((item) => (
+                                                    <a
+                                                        key={item.name}
+                                                        href={item.href}
+                                                        className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                                                    >
+                                                        {item.name}
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="mt-6 flex justify-center">
+                                            <button onClick={() => {logout()}} className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700">
+                                                Logout
+                                            </button>
+                                        </div>
+                                    </>
+                                :
+                                   <>
+                                       <Link
+                                           to="/login"
+                                           className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700"
+                                       >
+                                           Login
+                                       </Link>
 
-                                <div className="mt-6 flex justify-center">
-                                    <a href="#" className="text-base font-medium text-gray-900 hover:underline">
-                                        Go Premium
-                                    </a>
-                                </div>
+                                       <div className="mt-6 flex justify-center">
+                                           <Link to="/register" className="text-base font-medium text-gray-900 hover:underline">
+                                               Register
+                                           </Link>
+                                       </div>
+                                   </>
+                                }
                             </div>
                         </Popover.Panel>
                     </>
