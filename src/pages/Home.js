@@ -72,7 +72,7 @@ function Home() {
     }, [page, Search, Limit, Sort, Order, Genre, Quality, Rating, setAppState, setPage]);
     return (
 
-        <div className="min-h-full">
+        <div className="min-h-full z-0">
             {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
             <Popover
                 as="header"

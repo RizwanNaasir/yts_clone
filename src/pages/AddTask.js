@@ -4,8 +4,12 @@ import Todo from '../components/Todo';
 import { db } from '../firebase.js';
 import { collection , query, orderBy , onSnapshot, addDoc,serverTimestamp} from 'firebase/firestore';
 import Auth from "../components/Auth";
+import {useLocation} from "react-router-dom";
 const q=query(collection(db,'todos'),orderBy('timestamp','desc'));
+
 function Task() {
+    const location = useLocation();
+    const data = location.state?.data;
     const [todos,setTodos]=useState([]);
     const [input, setInput]=useState('');
     useEffect(() => {
@@ -19,13 +23,13 @@ function Task() {
     const addTodo=(e)=>{
         e.preventDefault();
         addDoc(collection(db,'todos'),{
-            todo:input,
+            todo: data.id,
             timestamp: serverTimestamp()
         })
         setInput('')
     };
     return (
-    <Auth>
+
         <div className="App">
             <h2> TODO List App</h2>
             <form>
@@ -37,7 +41,7 @@ function Task() {
                 {todos.map(item=> <Todo key={item.id} arr={item} />)}
             </ul>
         </div>
-    </Auth>
+
     );
 }
 export default Task;

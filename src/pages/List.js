@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-
+import { motion } from "framer-motion"
 const List = (props) => {
     const {movies} = props;
     if (!movies || movies.length === 0)
@@ -33,15 +33,19 @@ const List = (props) => {
     return (
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-6">
             {movies.map((movies) => (
-                <li
+                <motion.li  initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
                     key={movies.id}
                     className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
                 >
-                   <Link to="/details" state={{data : movies}}>
+
                     <div className="flex-1 flex flex-col p-3">
-                        <img className="w-full mx-auto rounded-lg shadow-2xl
+                        <Link to="/details" state={{data: movies}}>
+                            <img className="w-full mx-auto rounded-lg shadow-2xl
                             " src={movies.large_cover_image} alt=""/>
-                        <h3 className="mt-6 text-gray-900 text-lg font-medium">{movies.title}</h3>
+                            <h3 className="mt-6 text-gray-900 text-lg font-medium">{movies.title}</h3>
+                        </Link>
                         <dl className="mt-1 flex-grow flex flex-col justify-between">
                             <div className="flex-1 flex-row truncate">
                                 {movies.genres?.map((genre) => (
@@ -55,7 +59,7 @@ const List = (props) => {
                                 <a
                                     href={'//imdb.com/title/' + movies.imdb_code}
                                     className="px-2 py-1 rounded-md text-md font-medium bg-yellow-200 text-yellow-800">
-                                  {movies.rating}
+                                    {movies.rating}
                                 </a>
                             </dd>
                         </dl>
@@ -74,8 +78,8 @@ const List = (props) => {
                             ))}
                         </div>
                     </div>
-                   </Link>
-                </li>
+
+                </motion.li>
             ))}
         </ul>
     )

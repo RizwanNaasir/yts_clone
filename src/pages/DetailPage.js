@@ -1,21 +1,31 @@
 import React from 'react';
 import {QuestionMarkCircleIcon} from '@heroicons/react/solid'
 import LinearProgress from "@mui/material/LinearProgress";
-
+import { motion } from "framer-motion";
 const detailPage = (props) => {
 
     const {movie,suggestions} = props;
     if (!movie || movie.length === 0)
         return <LinearProgress />;
-    return (
-        <div className="min-h-full">
-            <main className="py-10">
+    return (<>
+        <img className="w-full min-h-full object-cover fixed" src={movie.background_image_original} alt=""/>
+        <div className="min-h-full absolute inset-0">
+            <a
+                href={"/"}
+                className="ml-3 fixed bottom-4 z-50 right-4 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Back to Home
+            </a>
+            <motion.main
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="py-10">
                 {/* Page header */}
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
                     <div className="flex items-center space-x-5">
                         <div>
-                            <h1 className="text-4xl font-bold text-gray-900">{movie.title}</h1>
-                            <p className="text-gray-500 my-2 font-bold text-black">{movie.year}</p>
+                            <h1 className="text-4xl font-bold text-white mix-blend-difference">{movie.title}</h1>
+                            <p className="my-2 font-bold text-white mix-blend-difference">{movie.year}</p>
                             {movie.genres?.map((genre) => (
                                 <span className="inline-flex items-center px-2.5 mr-2 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800">
                                 {genre}
@@ -23,7 +33,7 @@ const detailPage = (props) => {
                             ))}
                         </div>
                     </div>
-                    <div className="mt-6 flex flex-col-row justify-stretch space-x-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
+                    <div className="mt-6 flex flex-col-row overflow-x-visible justify-stretch space-x-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
                         {movie.torrents?.map((item) => (
                             <a
                                 href={`magnet:?xt=urn:btih:${movie.hash}&dn=${movie.title}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`}
@@ -41,7 +51,6 @@ const detailPage = (props) => {
 
                 <div className="mt-3 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
                     <section aria-labelledby="timeline-title" className="lg:col-start-3 lg:col-span-1">
-                        <div className="bg-white p-2 shadow sm:rounded-lg sm:px-6">
                             <div className="my-6 flow-root">
                                 <img
                                     className="h-full w-full rounded-lg"
@@ -49,7 +58,6 @@ const detailPage = (props) => {
                                     alt=""
                                 />
                             </div>
-                        </div>
                     </section>
                     <div className="space-y-6 lg:col-start-1 lg:col-span-2">
                         {/* Description list*/}
@@ -60,9 +68,11 @@ const detailPage = (props) => {
                                         Title Information
                                     </h2>
                                     <p className="mt-1 max-w-2xl text-sm text-gray-500">Movie Details</p>
-                                    <span className="inline-flex items-center absolute  top-3 right-3 px-5 py-2 rounded-md text-md font-medium bg-yellow-200 text-yellow-800">
+                                    <a href={'//imdb.com/title/' + movie.imdb_code}>
+                                        <span className="inline-flex items-center absolute  top-3 right-3 px-5 py-2 rounded-md text-md font-medium bg-yellow-200 text-yellow-800">
                                         {movie.rating} / 10
                                       </span>
+                                    </a>
                                 </div>
                                 <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
@@ -101,6 +111,7 @@ const detailPage = (props) => {
                                             className="mx-auto grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:gap-x-6 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12 xl:grid-cols-6"
                                         >
                                             {movie.cast?.map((person) => (
+                                                <a href={'//imdb.com/name/nm' + person.imdb_code}>
                                                  <li key={person.imdb_code}>
                                                     <div className="space-y-4">
                                                         <img className="mx-auto h-20 w-20 rounded-full lg:w-24 lg:h-24" src={person.url_small_image} alt="" />
@@ -112,6 +123,7 @@ const detailPage = (props) => {
                                                         </div>
                                                     </div>
                                                 </li>
+                                                </a>
                                             ))}
                                         </ul>
                                     </div>
@@ -210,8 +222,9 @@ const detailPage = (props) => {
 
 
                 </div>
-            </main>
+            </motion.main>
         </div>
+        </>
     )
 }
 export default detailPage;
