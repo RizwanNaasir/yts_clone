@@ -18,9 +18,9 @@ import {
 } from "firebase/firestore";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCEjJm-41ZDIKO4RrzTggf7bGCF95A1iro",
-    authDomain: "atomic-climate-340810.firebaseapp.com",
-    projectId: "atomic-climate-340810",
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
     storageBucket: "atomic-climate-340810.appspot.com",
     messagingSenderId: "859553373619",
     appId: "1:859553373619:web:782f73f168896733ecbfc6",
