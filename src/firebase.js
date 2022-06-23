@@ -56,7 +56,10 @@ const logInWithEmailAndPassword = async (email, password) => {
         await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
         console.error(err);
-        alert(err.message);
+        return {
+            status: "error",
+            message: err
+        }
     }
 };
 //Register User
@@ -79,10 +82,15 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 const sendPasswordReset = async (email) => {
     try {
         await sendPasswordResetEmail(auth, email);
-        alert("Password reset link sent!");
+         return {
+            status: "success",
+            message: "Password reset email sent"
+         }
     } catch (err) {
-        console.error(err);
-        alert(err.message);
+        return {
+            status: "error",
+            message: err
+        }
     }
 };
 //logout user

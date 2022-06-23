@@ -3,9 +3,13 @@ import { Fragment, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/outline'
 import { XIcon } from '@heroicons/react/solid'
+import {useLocation} from "react-router-dom";
 
 export default function SnackBar(props) {
-    const [show, setShow] = useState(true)
+    const location = useLocation();
+    const data = location.state?.data;
+
+    const [show, setShow] = useState(props)
 
     return (
         <>
@@ -17,7 +21,7 @@ export default function SnackBar(props) {
                 <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
                     {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
                     <Transition
-                        show={show}
+                        show={show || false}
                         as={Fragment}
                         enter="transform ease-out duration-300 transition"
                         enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
@@ -33,8 +37,8 @@ export default function SnackBar(props) {
                                         <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
                                     </div>
                                     <div className="ml-3 w-0 flex-1 pt-0.5">
-                                        <p className="text-sm font-medium text-gray-900">Successfully saved!</p>
-                                        <p className="mt-1 text-sm text-gray-500">{props}</p>
+                                        <p className="text-sm font-medium text-gray-900">werwerwerwerwer</p>
+                                        <p className="mt-1 text-sm text-gray-500"></p>
                                     </div>
                                     <div className="ml-4 flex-shrink-0 flex">
                                         <button

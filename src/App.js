@@ -21,7 +21,7 @@ function App() {
                 {/*End Auth Routes*/}
                 <Route exact path="/dashboard" element={<Dashboard/>}/>
                 <Route path='/details' element={<Details/>}/>
-                <Route path='/task' element={<Task/>}/>
+                {/*<Route path='/task' element={<Task/>}/>*/}
             </Routes>
         </Router>
     )
