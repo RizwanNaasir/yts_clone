@@ -5,9 +5,9 @@ import Details from "./pages/Details";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Dashboard from "./pages/Dashboard,js";
+import Dashboard from "./pages/Dashboard";
 import Reset from "./pages/auth/Reset";
-import Task from "./pages/AddTask";
+// import Task from "./pages/AddTask";
 
 function App() {
     return (
