@@ -15,7 +15,7 @@ function App() {
                 {/*Auth Routes*/}
                 {/*End Auth Routes*/}
                 <Route path="/dashboard" element={<Dashboard/>}/>
-                <Route path='/details' element={<Details/>}/>
+                <Route path='/details/:id' element={<Details/>}/>
                 {/*<Route path='/task' element={<Task/>}/>*/}
             </Routes>
         </Router>

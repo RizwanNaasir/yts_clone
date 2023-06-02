@@ -19,9 +19,9 @@ export const Tabs: React.FC<TabsProps> = (props) => {
         <div className="w-full px-2 sm:px-0">
             <Tab.Group onChange={(val) => props.setSort(categories[val])}>
                 <Tab.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
-                    {categories.map((category) => (
+                    {categories.map((category, index) => (
                         <Tab
-                            key={category.id}
+                            key={index}
                             className={({selected}) =>
                                 classNames(
                                     'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-blue-700',
