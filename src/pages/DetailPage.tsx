@@ -54,6 +54,7 @@ const detailPage = (props: detailPageProps) => {
                             {movie.torrents?.map((item: TorrentsEntity, index) => (
                                 <a
                                     key={index}
+                                    target="_blank"
                                     href={`magnet:?xt=urn:btih:${item.hash}&dn=${movie.title}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`}
                                 >
                                     <button
@@ -88,11 +89,11 @@ const detailPage = (props: detailPageProps) => {
                                             Title Information
                                         </h2>
                                         <p className="mt-1 max-w-2xl text-sm text-gray-500">Movie Details</p>
-                                        <a href={'//imdb.com/title/' + movie.imdb_code}>
+                                        <a href={'//imdb.com/title/' + movie.imdb_code} target="_blank">
                                         <span
                                             className="inline-flex items-center absolute  top-3 right-3 px-5 py-2 rounded-md text-md font-medium bg-yellow-200 text-yellow-800">
-                                        {movie.rating} / 10
-                                      </span>
+                                            {movie.rating} / 10
+                                        </span>
                                         </a>
                                     </div>
                                     <div className="border-t border-gray-200 px-4 py-5 sm:px-6">

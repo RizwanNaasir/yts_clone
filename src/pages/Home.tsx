@@ -5,7 +5,7 @@ import List from './List';
 import withListLoading from '../components/WithListLoading';
 import API from "../components/API";
 import {genres_list, quality_list, rating_list, SelectType, sort_by_list,} from '../components/filterLists'
-import Nav from "../components/layouts/nav";
+import NavBar from "../components/NavBar";
 import DynamicSelects, {CustomOption} from "../components/ListCustomSelects";
 import Tabs from "../components/Tabs";
 
@@ -82,11 +82,11 @@ function Home() {
             >
                 {({open}) => (
                     <>
-                        <Nav value={Search}
-                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-                             open={open}
-                             onClick={() => {
-                             }}/>
+                        <NavBar value={Search}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+                                open={open}
+                                onClick={() => {
+                                }}/>
 
                         <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
                             <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
@@ -126,7 +126,7 @@ function Home() {
             >
                 <div className="hidden sm:block">
                     <p className="text-sm text-gray-700">
-                        Showing Page <span className="font-medium">{page}</span> of <span
+                        Page <span className="font-medium">{page}</span> of <span
                         className="font-medium">{Math.trunc(totalMovies / Limit)}</span>
                     </p>
                 </div>

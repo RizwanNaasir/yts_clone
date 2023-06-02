@@ -10,8 +10,8 @@ type NavProps = {
     onClick: () => void;
 };
 
-const Nav: React.FC<NavProps> = (props) => {
-    return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+export default (props: NavProps) => (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
             <div className="flex md:absolute md:left-0 md:inset-y-0 lg:static xl:col-span-2">
                 <div className="flex-shrink-0 flex items-center">
@@ -41,7 +41,7 @@ const Nav: React.FC<NavProps> = (props) => {
                                 onChange={props.onChange}
                                 id="search"
                                 name="search"
-                                className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-rose-500 focus:border-rose-500 sm:text-sm"
+                                className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                 placeholder="Search"
                                 type="search"
                             />
@@ -52,7 +52,7 @@ const Nav: React.FC<NavProps> = (props) => {
             <div className="flex items-center md:absolute md:right-0 md:inset-y-0 lg:hidden">
                 {/* Mobile menu button */}
                 <Popover.Button
-                    className="-mx-2 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-rose-500">
+                    className="-mx-2 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                     <span className="sr-only">Open menu</span>
                     {props.open ? (
                         <XIcon className="block h-6 w-6" aria-hidden="true"/>
@@ -62,7 +62,5 @@ const Nav: React.FC<NavProps> = (props) => {
                 </Popover.Button>
             </div>
         </div>
-    </div>;
-}
-
-export default Nav;
+    </div>
+)
