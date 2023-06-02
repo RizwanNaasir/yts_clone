@@ -4,18 +4,10 @@ import '../App.css';
 import List from './List';
 import withListLoading from '../components/WithListLoading';
 import API from "../components/API";
-import {
-    genres_list,
-    quality_list,
-    rating_list,
-    SelectType,
-    sort_by_list,
-    Tab,
-    TabsList,
-} from '../components/filterLists'
-import TabsUnstyled from '@mui/base/TabsUnstyled';
+import {genres_list, quality_list, rating_list, SelectType, sort_by_list,} from '../components/filterLists'
 import Nav from "../components/layouts/nav";
 import DynamicSelects, {CustomOption} from "../components/ListCustomSelects";
+import Tabs from "../components/Tabs";
 
 
 function classNames(...classes: string[]) {
@@ -120,29 +112,8 @@ function Home() {
                         </nav>
                     </div>
                     <main className="lg:col-span-9 xl:col-span-9">
-
-
-                        <TabsUnstyled defaultValue={0}>
-                            <TabsList>
-                                <Tab
-                                    onClick={() => setSort({name: 'All', value: ''})}
-                                >Recent</Tab>
-                                <Tab
-                                    onClick={() => setSort({name: 'Most Downloaded', value: 'download_count'})}
-                                >Most Liked</Tab>
-                                <Tab
-                                    onClick={() => setSort({name: 'Most Liked', value: 'like_count'})}
-                                >Most Rated</Tab>
-                            </TabsList>
-                        </TabsUnstyled>
+                        <Tabs setSort={setSort}/>
                         <div className="mt-4">
-                            {/*<div className="flex justify-end">*/}
-                            {/*<CustomSelect*/}
-                            {/*    onChange={setOrder}*/}
-                            {/*    value={Order}*/}
-                            {/*    label="Order"*/}
-                            {/*    list={order}*/}
-                            {/*/></div>*/}
                             <h1 className="sr-only">Recent Movies</h1>
                             <ListLoading isLoading={appState.loading} movies={appState.movies}/>
                         </div>

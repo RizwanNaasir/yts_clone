@@ -1,8 +1,3 @@
-import {styled} from "@mui/system";
-import TabUnstyled, {tabUnstyledClasses} from "@mui/base/TabUnstyled";
-import {buttonUnstyledClasses} from "@mui/base/ButtonUnstyled";
-import TabsListUnstyled from "@mui/base/TabsListUnstyled";
-
 export type SelectType = {
     id?: number;
     name: string;
@@ -86,52 +81,4 @@ const blue = {
     900: '#003A75',
 };
 
-const Tab = styled(TabUnstyled)`
-  font-family: IBM Plex Sans, sans-serif;
-  color: white;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: bold;
-  background-color: transparent;
-  width: 100%;
-  padding: 12px 16px;
-  margin: 6px 6px;
-  border: none;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-
-  &:hover {
-    background-color: ${blue[400]};
-  }
-
-  &:focus {
-    color: #fff;
-    border-radius: 3px;
-    outline: 2px solid ${blue[200]};
-    outline-offset: 2px;
-  }
-
-  &.${tabUnstyledClasses.selected} {
-    background-color: ${blue[50]};
-    color: ${blue[600]};
-  }
-
-  &.${buttonUnstyledClasses.disabled} {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const TabsList = styled(TabsListUnstyled)`
-  min-width: 320px;
-  background-color: ${blue[500]};
-  border-radius: 8px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: space-between;
-`;
-
-export {genres_list, sort_by_list, rating_list, quality_list, TabsList, Tab, blue, order};
+export {genres_list, sort_by_list, rating_list, quality_list, blue, order};
