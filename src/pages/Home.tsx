@@ -4,15 +4,7 @@ import '../App.css';
 import List from './List';
 import withListLoading from '../components/WithListLoading';
 import API from "../components/API";
-import {
-    communities,
-    genres_list,
-    quality_list,
-    rating_list,
-    sort_by_list,
-    Tab,
-    TabsList,
-} from '../components/filterLists'
+import {genres_list, quality_list, rating_list, sort_by_list, Tab, TabsList,} from '../components/filterLists'
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import SelectSmall from "../components/MenuLists";
 import Nav from "../components/layouts/nav";
@@ -156,25 +148,6 @@ function Home() {
                                     label="Min Rating"
                                     list={rating_list}
                                 />
-                            </div>
-                            <div className="pt-10">
-                                <p
-                                    className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider"
-                                    id="communities-headline"
-                                >
-                                    My communities
-                                </p>
-                                <div className="mt-3 space-y-2" aria-labelledby="communities-headline">
-                                    {communities.map((community) => (
-                                        <a
-                                            key={community.name}
-                                            href={community.href}
-                                            className="group flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50"
-                                        >
-                                            <span className="truncate">{community.name}</span>
-                                        </a>
-                                    ))}
-                                </div>
                             </div>
                         </nav>
                     </div>
