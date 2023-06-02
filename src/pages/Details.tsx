@@ -4,8 +4,9 @@ import Page from "./DetailPage";
 import API from '../components/API';
 import { useLocation } from "react-router-dom";
 
-const Details = (props) => {
+const Details = () => {
     const location = useLocation();
+    // @ts-ignore
     const data = location.state?.data;
     const ListLoading = WithListLoading(Page);
     const [appState, setAppState] = useState({
@@ -13,9 +14,9 @@ const Details = (props) => {
         movie: null,
     });
     function movieList() {
-        setAppState({loading: true});
+        setAppState({movie: null, loading: true});
         const apiUrl = `movie_details.json`;
-        const params = {
+        const params: Record<string, any> = {
             movie_id: data.id,
             with_cast: true,
             with_images: true,

@@ -3,6 +3,12 @@ import TabUnstyled, {tabUnstyledClasses} from "@mui/base/TabUnstyled";
 import {buttonUnstyledClasses} from "@mui/base/ButtonUnstyled";
 import TabsListUnstyled from "@mui/base/TabsListUnstyled";
 
+export type Genre = {
+    id: number;
+    name: string;
+    value: string;
+    onChange(value: unknown): void;
+}
 const genres_list = [
     { id: 0, name: 'All', value: '' },
     { id: 1, name: 'Action', value: 'Action' },

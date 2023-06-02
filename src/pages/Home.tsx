@@ -1,45 +1,29 @@
-import React, {useEffect, useState, Fragment} from 'react';
-import {Menu, Popover, Transition, Listbox} from '@headlessui/react'
+import React, {useEffect, useState} from 'react';
+import {Popover} from '@headlessui/react'
 import '../App.css';
 import List from './List';
 import withListLoading from '../components/WithListLoading';
 import API from "../components/API";
-import {genres_list, sort_by_list, rating_list, quality_list, communities, TabsList, Tab, order } from '../components/filterLists'
-import {SearchIcon,} from '@heroicons/react/solid'
-import {BellIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
+import {
+    communities,
+    genres_list,
+    quality_list,
+    rating_list,
+    sort_by_list,
+    Tab,
+    TabsList,
+} from '../components/filterLists'
 import TabsUnstyled from '@mui/base/TabsUnstyled';
 import SelectSmall from "../components/MenuLists";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {Link} from "react-router-dom";
-import {auth, logout} from "../firebase";
-import CustomSelect from "../components/CustomSelect";
-import * as PropTypes from "prop-types";
 import Nav from "../components/layouts/nav";
 
 
-const userNavigation = [
-    {name: 'Your Profile', href: '#'},
-]
-
-function classNames(...classes) {
+function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-
-
-
-// Nav.propTypes = {
-//     value: PropTypes.string,
-//     onChange: PropTypes.func,
-//     open: PropTypes.bool,
-//     user: PropTypes.any,
-//     callbackfn: PropTypes.func,
-//     onClick: PropTypes.func
-// };
-
 function Home() {
 
-    const [user, loading, error] = useAuthState(auth);
     const ListLoading = withListLoading(List);
     const [appState, setAppState] = useState({
         loading: false,
@@ -48,17 +32,17 @@ function Home() {
     const [Limit, setLimit] = useState(9);
     const [Search, setSearch] = useState('');
     const [Sort, setSort] = useState('');
-    const [Order, setOrder] = useState('');
+    const [Order] = useState('');
     const [Genre, setGenre] = useState('');
     const [Quality, setQuality] = useState('');
     const [Rating, setRating] = useState('');
     let [page, setPage] = useState(1);
-    const [totalMovies, settTotalMovies] = useState('');
+    const [totalMovies, settTotalMovies] = useState(0);
 
     function movieList() {
-        setAppState({loading: true});
+        setAppState({movies: null, loading: true});
         const apiUrl = `list_movies.json`;
-        const params = {
+        const params: Record<string, any> = {
             query_term: Search,
             limit: Limit,
             page: page,
@@ -81,6 +65,7 @@ function Home() {
                 }
             );
     }
+
     useEffect(() => {
         movieList()
     }, [page, Search, Limit, Sort, Order, Genre, Quality, Rating, setAppState, setPage]);
@@ -99,24 +84,11 @@ function Home() {
             >
                 {({open}) => (
                     <>
-                        <Nav value={Search} onChange={(e) => setSearch(e.target.value)} open={open} user={user}
-                             callbackfn={(item) => (
-                                 <Menu.Item key={item.name}>
-                                     {({active}) => (
-                                         <a
-                                             href={item.href}
-                                             className={classNames(
-                                                 active ? 'bg-gray-100' : '',
-                                                 'block py-2 px-4 text-sm text-gray-700'
-                                             )}
-                                         >
-                                             {item.name}
-                                         </a>
-                                     )}
-                                 </Menu.Item>
-                             )} onClick={() => {
-                            logout()
-                        }}/>
+                        <Nav value={Search}
+                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+                             open={open}
+                             onClick={() => {
+                             }}/>
 
                         <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
                             <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
@@ -144,69 +116,6 @@ function Home() {
                                     label="Min Rating"
                                     list={rating_list}
                                 />
-                            </div>
-
-                            <div className="mt-6 max-w-3xl mx-auto px-4 sm:px-6">
-                                {user ?
-                                    <>
-                                        <div className="border-t border-gray-200 pt-4">
-                                            <div className="max-w-3xl mx-auto px-4 flex items-center sm:px-6">
-                                                <div className="flex-shrink-0">
-                                                    <img className="h-10 w-10 rounded-full" src={user?.photoURL}
-                                                         alt=""/>
-                                                </div>
-                                                <div className="ml-3">
-                                                    <div
-                                                        className="text-base font-medium text-gray-800">{user?.displayName}</div>
-                                                    <div
-                                                        className="text-sm font-medium text-gray-500">{user?.email}</div>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    className="ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
-                                                >
-                                                    <span className="sr-only">View notifications</span>
-                                                    <BellIcon className="h-6 w-6" aria-hidden="true"/>
-                                                </button>
-                                            </div>
-                                            <div className="mt-3 max-w-3xl mx-auto px-2 space-y-1 sm:px-4">
-                                                {userNavigation.map((item) => (
-                                                    <a
-                                                        key={item.name}
-                                                        href={item.href}
-                                                        className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                                                    >
-                                                        {item.name}
-                                                    </a>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <div className="mt-6 flex justify-center">
-                                            <button onClick={() => {
-                                                logout()
-                                            }}
-                                                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700">
-                                                Logout
-                                            </button>
-                                        </div>
-                                    </>
-                                    :
-                                    <>
-                                        <Link
-                                            to="/login"
-                                            className="w-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-rose-600 hover:bg-rose-700"
-                                        >
-                                            Login
-                                        </Link>
-
-                                        <div className="mt-6 flex justify-center">
-                                            <Link to="/register"
-                                                  className="text-base font-medium text-gray-900 hover:underline">
-                                                Register
-                                            </Link>
-                                        </div>
-                                    </>
-                                }
                             </div>
                         </Popover.Panel>
                     </>

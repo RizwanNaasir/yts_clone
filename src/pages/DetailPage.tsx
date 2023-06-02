@@ -2,11 +2,18 @@ import React from 'react';
 import {QuestionMarkCircleIcon} from '@heroicons/react/solid'
 import LinearProgress from "@mui/material/LinearProgress";
 import { motion } from "framer-motion";
+import {Movie, TorrentsEntity} from "../types/Movie";
 // import MovieID from "./AddTask";
-const detailPage = (props) => {
 
-    const {movie,suggestions} = props;
-    if (!movie || movie.length === 0)
+type detailPageProps = {
+    movie: Movie;
+    suggestions: any;
+};
+
+const detailPage = (props: detailPageProps) => {
+
+    const {movie} = props;
+    if (!movie)
         return <LinearProgress />;
     return (<>
         <img className="w-full min-h-full object-cover fixed" src={movie.background_image_original} alt=""/>
@@ -42,9 +49,9 @@ const detailPage = (props) => {
                         </div>
                     </div>
                     <div className="mt-6 flex flex-col-row overflow-x-visible justify-stretch space-x-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
-                        {movie.torrents?.map((item) => (
+                        {movie.torrents?.map((item: TorrentsEntity) => (
                             <a
-                                href={`magnet:?xt=urn:btih:${movie.hash}&dn=${movie.title}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`}
+                                href={`magnet:?xt=urn:btih:${item.hash}&dn=${movie.title}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`}
                             >
                                 <button
                                     type="button"
