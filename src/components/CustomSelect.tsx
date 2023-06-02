@@ -33,9 +33,12 @@ export const CustomSelect: React.FC<props> = (props) => {
                         <Transition
                             show={open}
                             as={Fragment}
-                            leave="transition ease-in duration-100"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
+                            enter="transition duration-100 ease-out"
+                            enterFrom="transform scale-95 opacity-0"
+                            enterTo="transform scale-100 opacity-100"
+                            leave="transition duration-75 ease-out"
+                            leaveFrom="transform scale-100 opacity-100"
+                            leaveTo="transform scale-95 opacity-0"
                         >
                             <Listbox.Options
                                 className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">

@@ -11,13 +11,16 @@ const List = (props: { movies: Movie[] | null }) => {
     return (
         <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 p-6">
             {movies.map((movie, index) => (
-                <motion.li initial={{opacity: 0}}
-                           animate={{opacity: 1}}
-                           exit={{opacity: 0}}
-                           key={index}
-                           className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
+                <motion.li
+                    initial={{opacity: 0, y: 100}} // Start with opacity 0 and y position 100 (below the container)
+                    animate={{opacity: 1, y: 0}} // Animate opacity to 1 and y position to 0 (default position)
+                    exit={{
+                        opacity: 0,
+                        y: 100
+                    }} // Exit animation with opacity 0 and y position 100 (below the container)
+                    key={index}
+                    className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
                 >
-
                     <div className="flex-1 flex flex-col p-3">
                         <Link to={`/details/${movie.id}`}
                               state={{data: movie}}>
@@ -37,6 +40,7 @@ const List = (props: { movies: Movie[] | null }) => {
                             <dd className="mt-3">
                                 <a
                                     href={'//imdb.com/title/' + movie.imdb_code}
+                                    target="_blank"
                                     className="px-2 py-1 rounded-md text-md font-medium bg-yellow-200 text-yellow-800">
                                     {movie.rating}
                                 </a>
@@ -48,6 +52,7 @@ const List = (props: { movies: Movie[] | null }) => {
                             {movie.torrents?.map((torrent, index) => (
                                 <div className="w-0 flex-1 flex" key={index}>
                                     <a
+                                        target="_blank"
                                         href={`magnet:?xt=urn:btih:${torrent.hash}&dn=${movie.title}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`}
                                         className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500 hover:bg-gray-100 hover:border-gray-300 focus:outline-none focus:shadow-outline"
                                     >

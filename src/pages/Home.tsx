@@ -1,40 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Popover} from '@headlessui/react'
 import '../App.css';
 import List from './List';
 import withListLoading from '../components/WithListLoading';
 import API from "../components/API";
-import {genres_list, quality_list, rating_list, SelectType, sort_by_list,} from '../components/filterLists'
+import {genres_list, order, quality_list, rating_list, SelectType, sort_by_list,} from '../components/filterLists'
 import NavBar from "../components/NavBar";
 import DynamicSelects, {CustomOption} from "../components/ListCustomSelects";
 import Tabs from "../components/Tabs";
-
+import {usePersistedState} from "../hooks/use-persist-state";
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
 
 function Home() {
-
+    const defaultSelectType: SelectType = {
+        name: 'All',
+        value: '',
+    }
     const ListLoading = withListLoading(List);
-    const [appState, setAppState] = useState({
+    const [appState, setAppState] = usePersistedState('appState', {
         loading: false,
         movies: null,
     });
-    const [Limit, setLimit] = useState(9);
-    const [Search, setSearch] = useState('');
-    const [Sort, setSort] = useState<SelectType>({name: 'All', value: ''});
-    const [Order] = useState<SelectType>({name: "Desc", value: 'desc'});
-    const [Genre, setGenre] = useState<SelectType>({name: "All", value: ''})
-    const [Quality, setQuality] = useState<SelectType>({name: "All", value: ''})
-    const [Rating, setRating] = useState<SelectType>({name: "All", value: ''})
-    let [page, setPage] = useState(1);
-    const [totalMovies, settTotalMovies] = useState(0);
+    const [Limit, setLimit] = usePersistedState<number>('Limit', 9);
+    const [Search, setSearch] = usePersistedState<string>('Search', '');
+    const [Sort, setSort] = usePersistedState<SelectType>('Sort', defaultSelectType);
+    const [Order, setOrder] = usePersistedState<SelectType>('Order', {name: 'Descending', value: 'desc'});
+    const [Genre, setGenre] = usePersistedState<SelectType>('Genre', defaultSelectType);
+    const [Quality, setQuality] = usePersistedState<SelectType>('Quality', defaultSelectType);
+    const [Rating, setRating] = usePersistedState<SelectType>('Rating', defaultSelectType);
+    const [page, setPage] = usePersistedState<number>('page', 1);
+    const [totalMovies, setTotalMovies] = usePersistedState<number>('totalMovies', 0);
+
     const customSelectOptions: CustomOption[] = [
         {options: sort_by_list, label: 'Sort By', value: Sort, setValue: setSort},
         {options: genres_list, label: 'Genre', value: Genre, setValue: setGenre},
         {options: quality_list, label: 'Quality', value: Quality, setValue: setQuality},
         {options: rating_list, label: 'Rating', value: Rating, setValue: setRating},
+        {options: order, label: 'Order', value: Order, setValue: setOrder},
     ]
 
     function movieList() {
@@ -53,9 +58,9 @@ function Home() {
         fetch(`${API.endpoint}${apiUrl}?${new URLSearchParams(params)}`)
             .then((response) => response.json())
             .then((data) => {
-                    setLimit(data.data.limit);
-                    settTotalMovies(data.data.movie_count);
-                    setPage(data.data.page_number);
+                setLimit(data.data.limit);
+                setTotalMovies(data.data.movie_count);
+                setPage(data.data.page_number);
                     setAppState({
                         loading: false,
                         movies: data.data.movies,

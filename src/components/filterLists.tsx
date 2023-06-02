@@ -65,20 +65,8 @@ const quality_list: SelectType[] = [
     {name: 'All', value: ''},
     {name: '720p', value: '720p'},
     {name: '1080p', value: '1080p'},
+    {name: '2160p', value: '2160p'},
     {name: '3D', value: '3D'},
-    {name: '4K', value: '4K'},
 ]
-const blue = {
-    50: '#F0F7FF',
-    100: '#C2E0FF',
-    200: '#80BFFF',
-    300: '#66B2FF',
-    400: '#3399FF',
-    500: '#007FFF',
-    600: '#0072E5',
-    700: '#0059B2',
-    800: '#004C99',
-    900: '#003A75',
-};
 
-export {genres_list, sort_by_list, rating_list, quality_list, blue, order};
+export {genres_list, sort_by_list, rating_list, quality_list, order};
