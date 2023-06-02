@@ -1,9 +1,8 @@
 import React from 'react';
 import {QuestionMarkCircleIcon} from '@heroicons/react/solid'
-import LinearProgress from "@mui/material/LinearProgress";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import {Movie, TorrentsEntity} from "../types/Movie";
-// import MovieID from "./AddTask";
+import Loading from "../components/Loading";
 
 type detailPageProps = {
     movie: Movie;
@@ -14,7 +13,7 @@ const detailPage = (props: detailPageProps) => {
 
     const {movie} = props;
     if (!movie)
-        return <LinearProgress />;
+        return <Loading/>;
     return (<>
         <img className="w-full min-h-full object-cover fixed" src={movie.background_image_original} alt=""/>
         <div className="min-h-full absolute inset-0">
