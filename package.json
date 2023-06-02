@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "https://rizwannaasir.github.io",
   "dependencies": {
-    "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@headlessui/react": "^1.6.3",
     "@heroicons/react": "^1.0.6",

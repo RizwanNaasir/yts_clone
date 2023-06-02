@@ -4,10 +4,18 @@ import '../App.css';
 import List from './List';
 import withListLoading from '../components/WithListLoading';
 import API from "../components/API";
-import {genres_list, quality_list, rating_list, sort_by_list, Tab, TabsList,} from '../components/filterLists'
+import {
+    genres_list,
+    quality_list,
+    rating_list,
+    SelectType,
+    sort_by_list,
+    Tab,
+    TabsList,
+} from '../components/filterLists'
 import TabsUnstyled from '@mui/base/TabsUnstyled';
-import SelectSmall from "../components/MenuLists";
 import Nav from "../components/layouts/nav";
+import DynamicSelects, {CustomOption} from "../components/ListCustomSelects";
 
 
 function classNames(...classes: string[]) {
@@ -23,13 +31,19 @@ function Home() {
     });
     const [Limit, setLimit] = useState(9);
     const [Search, setSearch] = useState('');
-    const [Sort, setSort] = useState('');
-    const [Order] = useState('');
-    const [Genre, setGenre] = useState('');
-    const [Quality, setQuality] = useState('');
-    const [Rating, setRating] = useState('');
+    const [Sort, setSort] = useState<SelectType>({name: 'All', value: ''});
+    const [Order] = useState<SelectType>({name: "Desc", value: 'desc'});
+    const [Genre, setGenre] = useState<SelectType>({name: "All", value: ''})
+    const [Quality, setQuality] = useState<SelectType>({name: "All", value: ''})
+    const [Rating, setRating] = useState<SelectType>({name: "All", value: ''})
     let [page, setPage] = useState(1);
     const [totalMovies, settTotalMovies] = useState(0);
+    const customSelectOptions: CustomOption[] = [
+        {options: sort_by_list, label: 'Sort By', value: Sort, setValue: setSort},
+        {options: genres_list, label: 'Genre', value: Genre, setValue: setGenre},
+        {options: quality_list, label: 'Quality', value: Quality, setValue: setQuality},
+        {options: rating_list, label: 'Rating', value: Rating, setValue: setRating},
+    ]
 
     function movieList() {
         setAppState({movies: null, loading: true});
@@ -38,11 +52,11 @@ function Home() {
             query_term: Search,
             limit: Limit,
             page: page,
-            sort_by: Sort,
-            order_by: Order,
-            genre: Genre,
-            quality: Quality,
-            minimum_rating: Rating,
+            sort_by: Sort.value,
+            order_by: Order.value,
+            genre: Genre.value,
+            quality: Quality.value,
+            minimum_rating: Rating.value,
         }
         fetch(`${API.endpoint}${apiUrl}?${new URLSearchParams(params)}`)
             .then((response) => response.json())
@@ -60,7 +74,7 @@ function Home() {
 
     useEffect(() => {
         movieList()
-    }, [page, Search, Limit, Sort, Order, Genre, Quality, Rating, setAppState, setPage]);
+    }, [page, Search, Limit, Sort, Order, Genre.value, Quality, Rating, setAppState, setPage]);
     return (
 
         <div className="min-h-full z-0">
@@ -84,30 +98,7 @@ function Home() {
 
                         <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
                             <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
-                                <SelectSmall
-                                    onChange={setGenre}
-                                    value={Genre}
-                                    label="Genre"
-                                    list={genres_list}
-                                />
-                                <SelectSmall
-                                    onChange={setQuality}
-                                    value={Quality}
-                                    label="Quality"
-                                    list={quality_list}
-                                />
-                                <SelectSmall
-                                    onChange={setSort}
-                                    value={Sort}
-                                    label="Sort by"
-                                    list={sort_by_list}
-                                />
-                                <SelectSmall
-                                    onChange={setRating}
-                                    value={Rating}
-                                    label="Min Rating"
-                                    list={rating_list}
-                                />
+                                <DynamicSelects options={customSelectOptions}/>
                             </div>
                         </Popover.Panel>
                     </>
@@ -124,30 +115,7 @@ function Home() {
                                 Filters
                             </p>
                             <div className="py-8 space-y-3">
-                                <SelectSmall
-                                    onChange={setGenre}
-                                    value={Genre}
-                                    label="Genre"
-                                    list={genres_list}
-                                />
-                                <SelectSmall
-                                    onChange={setQuality}
-                                    value={Quality}
-                                    label="Quality"
-                                    list={quality_list}
-                                />
-                                <SelectSmall
-                                    onChange={setSort}
-                                    value={Sort}
-                                    label="Sort by"
-                                    list={sort_by_list}
-                                />
-                                <SelectSmall
-                                    onChange={setRating}
-                                    value={Rating}
-                                    label="Min Rating"
-                                    list={rating_list}
-                                />
+                                <DynamicSelects options={customSelectOptions}/>
                             </div>
                         </nav>
                     </div>
@@ -157,13 +125,13 @@ function Home() {
                         <TabsUnstyled defaultValue={0}>
                             <TabsList>
                                 <Tab
-                                    onClick={() => setSort('')}
+                                    onClick={() => setSort({name: 'All', value: ''})}
                                 >Recent</Tab>
                                 <Tab
-                                    onClick={() => setSort('download_count')}
+                                    onClick={() => setSort({name: 'Most Downloaded', value: 'download_count'})}
                                 >Most Liked</Tab>
                                 <Tab
-                                    onClick={() => setSort('rating')}
+                                    onClick={() => setSort({name: 'Most Liked', value: 'like_count'})}
                                 >Most Rated</Tab>
                             </TabsList>
                         </TabsUnstyled>
