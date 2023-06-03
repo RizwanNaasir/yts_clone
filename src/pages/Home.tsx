@@ -9,6 +9,7 @@ import NavBar from "../components/NavBar";
 import DynamicSelects, {CustomOption} from "../components/ListCustomSelects";
 import Tabs from "../components/Tabs";
 import {usePersistedState} from "../hooks/use-persist-state";
+import bg from '../static/beams.webp';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -73,83 +74,94 @@ function Home() {
         movieList()
     }, [page, Search, Limit, Sort, Order, Genre.value, Quality, Rating, setAppState, setPage]);
     return (
+        <>
+            <img className="w-full min-h-full object-cover fixed z-0" src={bg} alt=""/>
+            <div className="min-h-full z-0">
+                {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
+                <Popover
+                    as="header"
+                    className={({open}) =>
+                        classNames(
+                            open ? 'fixed inset-0 z-40 overflow-y-auto' : '',
+                            'bg-white shadow-sm lg:static lg:overflow-y-visible'
+                        )
+                    }
+                >
+                    {({open}) => (
+                        <>
+                            <NavBar value={Search}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+                                    open={open}
+                                    onClick={() => {
+                                    }}/>
 
-        <div className="min-h-full z-0">
-            {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
-            <Popover
-                as="header"
-                className={({open}) =>
-                    classNames(
-                        open ? 'fixed inset-0 z-40 overflow-y-auto' : '',
-                        'bg-white shadow-sm lg:static lg:overflow-y-visible'
-                    )
-                }
-            >
-                {({open}) => (
-                    <>
-                        <NavBar value={Search}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-                                open={open}
-                                onClick={() => {
-                                }}/>
+                            <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
+                                <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
+                                    <DynamicSelects options={customSelectOptions}/>
+                                </div>
+                            </Popover.Panel>
+                        </>
+                    )}
+                </Popover>
 
-                        <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
-                            <div className="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
-                                <DynamicSelects options={customSelectOptions}/>
-                            </div>
-                        </Popover.Panel>
-                    </>
-                )}
-            </Popover>
-
-            <div className="py-10">
-                <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
-                    <div className="hidden lg:block lg:col-span-3 xl:col-span-2">
-                        <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
-                            <p
-                                className="p-3 text-xs text-center font-semibold text-gray-500 uppercase tracking-wider"
-                            >
-                                Filters
-                            </p>
-                            <div className="py-8 space-y-3">
-                                <DynamicSelects options={customSelectOptions}/>
-                            </div>
-                        </nav>
-                    </div>
-                    <main className="lg:col-span-9 xl:col-span-9">
-                        <Tabs setSort={setSort}/>
-                        <div className="mt-4">
-                            <h1 className="sr-only">Recent Movies</h1>
-                            <ListLoading isLoading={appState.loading} movies={appState.movies}/>
+                <div className="py-10">
+                    <div className="max-w-3xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-12 lg:gap-8">
+                        <div className="hidden lg:block lg:col-span-3 xl:col-span-2">
+                            <nav aria-label="Sidebar" className="sticky top-4 divide-y divide-gray-300">
+                                <p
+                                    className="p-3 text-xs text-center font-semibold text-gray-500 uppercase tracking-wider"
+                                >
+                                    Filters
+                                </p>
+                                <div className="py-8 space-y-3">
+                                    <DynamicSelects options={customSelectOptions}/>
+                                </div>
+                            </nav>
                         </div>
-                    </main>
+                        <main className="lg:col-span-9 xl:col-span-9  z-40">
+                            <Tabs setSort={setSort}/>
+                            <div className="mt-4">
+                                <h1 className="sr-only">Recent Movies</h1>
+                                <ListLoading isLoading={appState.loading} movies={appState.movies}/>
+                            </div>
+                        </main>
+                    </div>
                 </div>
+                <nav
+                    className="bg-white px-4 z-50 fixed bottom-0 w-full py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
+                    aria-label="Pagination"
+                >
+                    <div className="hidden sm:block">
+                        <p className="text-sm text-gray-700">
+                            Page <span className="font-medium">{page}</span> of <span
+                            className="font-medium">{Math.trunc(totalMovies / Limit)}</span>
+                        </p>
+
+                        {/*<input*/}
+                        {/*    value={page}*/}
+                        {/*    type="number"*/}
+                        {/*    min={1}*/}
+                        {/*    max={Math.trunc(totalMovies / Limit)}*/}
+                        {/*    className="ml-3 w-20 px-2 py-1 border border-gray-300 text-sm rounded-md text-gray-700 bg-white"*/}
+                        {/*    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPage(parseInt(e.target.value))}*/}
+                        {/*/>*/}
+                    </div>
+                    <div className="flex-1 flex justify-between sm:justify-end">
+                        <button
+                            disabled={page === 1}
+                            onClick={() => setPage(page - 1)}
+                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Previous
+                        </button>
+                        <button
+                            onClick={() => setPage(page + 1)}
+                            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            Next
+                        </button>
+                    </div>
+                </nav>
             </div>
-            <nav
-                className="bg-white px-4 fixed bottom-0 w-full py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
-                aria-label="Pagination"
-            >
-                <div className="hidden sm:block">
-                    <p className="text-sm text-gray-700">
-                        Page <span className="font-medium">{page}</span> of <span
-                        className="font-medium">{Math.trunc(totalMovies / Limit)}</span>
-                    </p>
-                </div>
-                <div className="flex-1 flex justify-between sm:justify-end">
-                    <button
-                        disabled={page === 1}
-                        onClick={() => setPage(page - 1)}
-                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                        Previous
-                    </button>
-                    <button
-                        onClick={() => setPage(page + 1)}
-                        className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                        Next
-                    </button>
-                </div>
-            </nav>
-        </div>
+        </>
     )
 }
 

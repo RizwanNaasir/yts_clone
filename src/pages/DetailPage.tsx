@@ -1,8 +1,9 @@
 import React from 'react';
-import {QuestionMarkCircleIcon} from '@heroicons/react/solid'
 import {AnimatePresence, motion} from "framer-motion";
-import {Movie, TorrentsEntity} from "../types/Movie";
+import {Movie} from "../types/Movie";
 import Loading from "../components/Loading";
+import CoverImage from "../static/300x450.webp";
+import TorrentOptions from "../components/TorrentOptions";
 
 type detailPageProps = {
     movie: Movie;
@@ -37,39 +38,18 @@ const detailPage = (props: detailPageProps) => {
                             className="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
                             <div className="flex items-center space-x-5">
                                 <div>
-                                    <h1 className="text-4xl font-bold text-white mix-blend-difference">{movie.title}</h1>
+                                    <div className="flex flex-row">
+                                        <h1 className="text-4xl font-bold text-white mix-blend-difference mr-2">{movie.title}</h1>
+                                        <TorrentOptions options={movie.torrents} movieTitle={movie.title}/>
+                                    </div>
                                     <p className="my-2 font-bold text-white mix-blend-difference">{movie.year}</p>
                                     {movie.genres?.map((genre, index) => (
                                         <span key={index}
-                                              className="inline-flex items-center px-2.5 mr-2 py-0.5 rounded-md text-sm font-medium bg-blue-100 text-blue-800">
-                                    {genre}
-                                </span>
+                                              className="inline-flex items-center rounded-md bg-blue-100 m-1 px-1.5 py-0.5 text-xs font-medium text-blue-700  ring-1 ring-inset ring-blue-700/10">
+                                            {genre}
+                                        </span>
                                     ))}
-                                    {/*<button*/}
-                                    {/*    onClick={() => {MovieID(movie.id)}}*/}
-                                    {/*    type="button"*/}
-                                    {/*    className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"*/}
-                                    {/*>*/}
-                                    {/*    Add to Watchlist*/}
-                                    {/*</button>*/}
                                 </div>
-                            </div>
-                            <div
-                                className="mt-6 flex flex-col-row overflow-x-visible justify-stretch space-x-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
-                                {movie.torrents?.map((item: TorrentsEntity, index) => (
-                                    <a
-                                        key={index}
-                                        target="_blank"
-                                        href={`magnet:?xt=urn:btih:${item.hash}&dn=${movie.title}&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337`}
-                                    >
-                                        <button
-                                            type="button"
-                                            className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
-                                        >
-                                            {item.quality}
-                                        </button>
-                                    </a>
-                                ))}
                             </div>
                         </div>
 
@@ -81,6 +61,10 @@ const detailPage = (props: detailPageProps) => {
                                         className="h-full w-full rounded-lg"
                                         src={movie.large_cover_image}
                                         alt=""
+                                        onError={(e: any) => {
+                                            e.target.onerror = null;
+                                            e.target.src = CoverImage;
+                                        }}
                                     />
                                 </div>
                             </section>
@@ -160,56 +144,7 @@ const detailPage = (props: detailPageProps) => {
                                         </div>
                                     </div>
                                 </section>
-                                <section aria-labelledby="cast">
-                                    <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
-                                        <div className="bg-gray-50 px-4 py-6 sm:px-6">
-                                            <div className="flex space-x-3">
-                                                <div className="flex-shrink-0">
-                                                    <img className="h-10 w-10 rounded-full" src="" alt=""/>
-                                                </div>
-                                                <div className="min-w-0 flex-1">
-                                                    <form action="#">
-                                                        <div>
-                                                            <label htmlFor="comment" className="sr-only">
-                                                                About
-                                                            </label>
-                                                            <textarea
-                                                                id="comment"
-                                                                name="comment"
-                                                                rows={3}
-                                                                className="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border border-gray-300 rounded-md"
-                                                                placeholder="Add a note"
-                                                                defaultValue={''}
-                                                            />
-                                                        </div>
-                                                        <div className="mt-3 flex items-center justify-between">
-                                                            <a
-                                                                href="#"
-                                                                className="group inline-flex items-start text-sm space-x-2 text-gray-500 hover:text-gray-900"
-                                                            >
-                                                                <QuestionMarkCircleIcon
-                                                                    className="flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                                                    aria-hidden="true"
-                                                                />
-                                                                <span>Some HTML is okay.</span>
-                                                            </a>
-                                                            <button
-                                                                type="submit"
-                                                                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                                                            >
-                                                                Comment
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-
                             </div>
-
-
                         </div>
                     </motion.main>
                 </AnimatePresence>

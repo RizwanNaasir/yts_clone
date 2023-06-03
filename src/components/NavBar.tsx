@@ -13,18 +13,7 @@ type NavProps = {
 export default (props: NavProps) => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
-            <div className="flex md:absolute md:left-0 md:inset-y-0 lg:static xl:col-span-2">
-                <div className="flex-shrink-0 flex items-center">
-                    <a href="#">
-                        <img
-                            className="block h-8 w-auto"
-                            src={window.location.origin + "/logo512.png"}
-                            alt="YTS Logo"
-                        />
-                    </a>
-                </div>
-            </div>
-            <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
+            <div className="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-12">
                 <div
                     className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                     <div className="w-full">
