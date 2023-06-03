@@ -9,7 +9,7 @@ import NavBar from "../components/NavBar";
 import DynamicSelects, {CustomOption} from "../components/ListCustomSelects";
 import Tabs from "../components/Tabs";
 import {usePersistedState} from "../hooks/use-persist-state";
-import bg from '../static/beams.webp';
+import {Pagination} from "@mantine/core";
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -75,7 +75,7 @@ function Home() {
     }, [page, Search, Limit, Sort, Order, Genre.value, Quality, Rating, setAppState, setPage]);
     return (
         <>
-            <img className="w-full min-h-full object-cover fixed z-0" src={bg} alt=""/>
+            {/*<img className="w-full min-h-full object-cover fixed z-0" src={bg} alt=""/>*/}
             <div className="min-h-full z-0">
                 {/* When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars */}
                 <Popover
@@ -127,39 +127,18 @@ function Home() {
                         </main>
                     </div>
                 </div>
-                <nav
-                    className="bg-white px-4 z-50 fixed bottom-0 w-full py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
+                <footer
+                    className="bg-white px-4 z-50 fixed bottom-0 w-full py-3 flex justify-center border-t border-gray-200 sm:px-6"
                     aria-label="Pagination"
                 >
-                    <div className="hidden sm:block">
-                        <p className="text-sm text-gray-700">
-                            Page <span className="font-medium">{page}</span> of <span
-                            className="font-medium">{Math.trunc(totalMovies / Limit)}</span>
-                        </p>
-
-                        {/*<input*/}
-                        {/*    value={page}*/}
-                        {/*    type="number"*/}
-                        {/*    min={1}*/}
-                        {/*    max={Math.trunc(totalMovies / Limit)}*/}
-                        {/*    className="ml-3 w-20 px-2 py-1 border border-gray-300 text-sm rounded-md text-gray-700 bg-white"*/}
-                        {/*    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPage(parseInt(e.target.value))}*/}
-                        {/*/>*/}
-                    </div>
-                    <div className="flex-1 flex justify-between sm:justify-end">
-                        <button
-                            disabled={page === 1}
-                            onClick={() => setPage(page - 1)}
-                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                            Previous
-                        </button>
-                        <button
-                            onClick={() => setPage(page + 1)}
-                            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                            Next
-                        </button>
-                    </div>
-                </nav>
+                    <Pagination
+                        total={totalMovies}
+                        radius="md"
+                        size="xs"
+                        value={page}
+                        onChange={setPage}
+                    />
+                </footer>
             </div>
         </>
     )
