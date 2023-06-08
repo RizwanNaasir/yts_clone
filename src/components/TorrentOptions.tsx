@@ -49,9 +49,13 @@ export default function TorrentOptions(props: Props) {
                                             >
                                                 {item.quality}
                                                 <span
+                                                    className="inline-flex items-center rounded-md bg-green-100 m-1 px-1.5 py-0.5 text-xs font-medium text-green-700  ring-1 ring-inset ring-blue-700/10">
+                                                    {item.size}
+                                                </span>
+                                                <span
                                                     className="inline-flex items-center rounded-md bg-blue-100 m-1 px-1.5 py-0.5 text-xs font-medium text-blue-700  ring-1 ring-inset ring-blue-700/10">
-                                                {item.type}
-                                            </span>
+                                                    {item.type}
+                                                </span>
                                             </a>
                                         )}
                                     </Menu.Item>
