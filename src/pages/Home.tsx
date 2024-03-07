@@ -73,6 +73,16 @@ function Home() {
     useEffect(() => {
         movieList()
     }, [page, Search, Limit, Sort, Order, Genre.value, Quality, Rating, setAppState, setPage]);
+
+    function resetFilters() {
+        setSort(defaultSelectType);
+        setOrder({name: 'Descending', value: 'desc'});
+        setGenre(defaultSelectType);
+        setQuality(defaultSelectType);
+        setRating(defaultSelectType);
+        setPage(1);
+    }
+
     return (
         <>
             {/*<img className="w-full min-h-full object-cover fixed z-0" src={bg} alt=""/>*/}
@@ -90,7 +100,11 @@ function Home() {
                     {({open}) => (
                         <>
                             <NavBar value={Search}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        console.log(e.target.value);
+                                        resetFilters();
+                                        setSearch(e.target.value);
+                                    }}
                                     open={open}
                                     onClick={() => {
                                     }}/>
